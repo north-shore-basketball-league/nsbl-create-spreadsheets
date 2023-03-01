@@ -1,7 +1,11 @@
+import os
+import uuid
 from openpyxl import Workbook, load_workbook
 from openpyxl.worksheet import cell_range
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
+from openpyxl.drawing.image import Image as OpenpyxlImage
 from copy import copy
+from PIL import Image as PILImage
 import re
 from time import sleep
 
@@ -13,8 +17,9 @@ from time import sleep
 
 class ExportSpreadsheets:
     def __init__(self, fileName):
-        self.fileName = fileName
+        self.scoresheetImg = None
 
+        self.fileName = fileName
         self.workbook = Workbook()
 
         self.template = load_workbook(
@@ -38,8 +43,6 @@ class ExportSpreadsheets:
 
         return None
 
-    # {"9c1": {"team_name_a": {"players": [["name", 0], ["name", 0]]}, "team_name_b": {
-    # "players": [["name", 1], ["name", 1]]}, "time": "9", "white": "team_name_a", "black": "team_name_b", "court": 1, }}
     def add_data(self, data):
         for year in data:
             for game in data[year]:
@@ -145,20 +148,31 @@ class ExportSpreadsheets:
 
         template = self.template[type]
 
-        self._copy_sheet(template, worksheet)
+        self._copy_sheet(template, worksheet, type)
 
-    def _copy_sheet(self, source_sheet, target_sheet):
+    def _copy_sheet(self, source_sheet, target_sheet, type):
         # copy all the cel values and styles
         self._copy_cells(source_sheet, target_sheet)
-        self._copy_sheet_attributes(source_sheet, target_sheet)
+        self._copy_sheet_attributes(source_sheet, target_sheet, type)
 
-    def _copy_sheet_attributes(self, source_sheet, target_sheet):
+    def _copy_sheet_attributes(self, source_sheet, target_sheet, type):
         target_sheet.sheet_format = copy(source_sheet.sheet_format)
         target_sheet.sheet_properties = copy(source_sheet.sheet_properties)
         target_sheet.merged_cells = copy(source_sheet.merged_cells)
         target_sheet.page_margins = copy(source_sheet.page_margins)
         target_sheet.freeze_panes = copy(source_sheet.freeze_panes)
-        # target_sheet._images = copy(source_sheet._images)
+
+        target_sheet._images = []
+
+        # Save the NSBL img on the template sheet
+        if type == "scoresheet" and self.scoresheetImg == None:
+            imgs = copy(source_sheet._images)
+
+            for img in imgs:
+                self.scoresheetImg = PILImage.open(img.ref)
+                self.scoresheetImg.resize((img.width, img.height))
+        elif type == "scoresheet":
+            target_sheet._images = [self.scoresheetImg]
 
         # set row dimensions
         # So you cannot copy the row_dimensions attribute. Does not work (because of meta data in the attribute I think). So we copy every row's row_dimensions. That seems to work.
