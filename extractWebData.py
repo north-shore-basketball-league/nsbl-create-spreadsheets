@@ -1,4 +1,3 @@
-from bs4 import BeautifulSoup
 import pandas as pd
 from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
@@ -6,10 +5,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 import json
-from typing import NewType
-
-# Debugging only:
-from icecream import ic
 
 
 class ExtractWebData:
