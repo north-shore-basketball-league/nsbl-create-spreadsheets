@@ -2,3 +2,4 @@ test.xlsx
 team-data.*
 setup.*
 __pycache__/
+.venv/
