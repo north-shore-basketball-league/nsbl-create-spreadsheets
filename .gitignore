@@ -1,1 +1,4 @@
 test.xlsx
+team-data.*
+setup.*
+__pycache__/
