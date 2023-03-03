@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import pandas as pd
-from selenium.webdriver import Chrome
+from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.support.wait import WebDriverWait
@@ -14,8 +14,11 @@ from icecream import ic
 
 class ExtractWebData:
     def __init__(self) -> None:
+        options = ChromeOptions()
+        options.headless = True
+
         self.driver = Chrome(
-            service=ChromeService(ChromeDriverManager().install()))
+            service=ChromeService(ChromeDriverManager().install()), chrome_options=options)
 
     def __del__(self):
         self.driver.quit()
@@ -28,6 +31,7 @@ class ExtractWebData:
         return code
 
     def _execute_js_code(self, driver):
+        print(driver.current_url)
         res = driver.execute_script(self.script)
         return json.loads(res)
 
