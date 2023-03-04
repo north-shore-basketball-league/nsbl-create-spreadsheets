@@ -4,7 +4,6 @@ from printing import Printing
 
 # TODO:
 # Make times 12 hour
-# Get rid of the arbitrary numbers in _get_variable_pos and use the api to get the cells with data in them
 
 
 class ExportSpreadsheets:
@@ -87,10 +86,13 @@ class ExportSpreadsheets:
     def _get_variable_pos(self, worksheet):
         vars = {}
 
+        rows = worksheet.used_range.rows.count
+        cols = worksheet.used_range.columns.count
+
         # First 55 rows
-        for row in range(1, 56):
+        for row in range(1, rows + 1):
             # First 27 columns
-            for column in range(1, 28):
+            for column in range(1, cols + 1):
                 cellValue = worksheet.range(row, column).value
 
                 if not isinstance(cellValue, str):
