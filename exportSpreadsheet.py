@@ -120,7 +120,7 @@ if __name__ == "__main__":
     testWorkbook = ExportSpreadsheets("test.xlsx")
     testData = {"3/4": {"9c1": {"ateams": [["name", 0], ["name", 0]], "wjdf": [
         ["name", 1], ["name", 1]], "time": "9", "white": "ateams", "black": "wjdf", "court": 1, }}, "4/5": {"11c1": {"ateams": [["name", 0], ["name", 0]], "wjdf": [
-            ["name", 1], ["name", 1]], "time": "11", "white": "ateams", "black": "wjdf", "court": 1, }}, }
+            ["name", 1], ["name", 1]], "time": "11", "white": "ateams", "black": "wjdf", "court": 1, }}}
 
     testWorkbook.add_data(testData)
 
