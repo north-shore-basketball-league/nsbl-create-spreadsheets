@@ -3,7 +3,7 @@ import re
 from printing import Printing
 
 # TODO:
-# Make times  12 hour
+# Make times 12 hour
 # Get rid of the arbitrary numbers in _get_variable_pos and use the api to get the cells with data in them
 
 
