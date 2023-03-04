@@ -29,7 +29,7 @@ jobs:
         path: /
     
     - name: Upload Windows Application
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: my-exe
         path: src/dist/windows
