@@ -1,0 +1,35 @@
+name: Package exe with PyInstaller - Windows
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    - name: Run Python commands
+      run: |
+          pip install --upgrade pip
+          python3.8 -m venv env
+          source env/bin/activate
+          echo "VIRTUAL ENV:" $VIRTUAL_ENV
+          pip freeze > requirements.txt
+    
+    - name: Package Windows Application
+      uses: JackMcKew/pyinstaller-action-windows@main
+      with:
+        path: /
+    
+    - name: Upload Windows Application
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-exe
+        path: src/dist/windows
