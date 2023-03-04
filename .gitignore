@@ -3,6 +3,5 @@ team-data.*
 output.*
 setup.*
 __pycache__/
-.venv/
 build/
 dist/
