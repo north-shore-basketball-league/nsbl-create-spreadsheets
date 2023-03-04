@@ -48,7 +48,7 @@ jobs:
             CMD_BUILD: >
               pyinstaller "Extract NSBL Games.spec"
               zip -r "extract-nsbl-games.zip" "Extract NSBL Games/"
-            OUT_FILE_NAME: "Extract NSBL Games.exe"
+            OUT_FILE_NAME: "Extract NSBL Games.zip"
             ASSET_MIME: application/vnd.microsoft.portable-executable
     steps:
       - uses: actions/checkout@v1
