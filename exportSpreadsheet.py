@@ -2,9 +2,6 @@ import xlwings as xw
 import re
 from printing import Printing
 
-# TODO:
-# Make times 12 hour
-
 
 class ExportSpreadsheets:
     def __init__(self, fileName):
