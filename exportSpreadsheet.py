@@ -1,5 +1,6 @@
 import xlwings as xw
 import re
+from printing import Printing
 
 # TODO:
 # Make times 12 hour
@@ -33,7 +34,8 @@ class ExportSpreadsheets:
     def add_data(self, data):
         for year in data:
             for game in data[year]:
-                # print(game, year)
+                Printing().print_inline(
+                    f"Exporting data for years {year} and court {game}")
                 self._add_runsheet_data(data[year][game], game)
                 self._add_scoresheet_data(data[year][game], game, year)
 
