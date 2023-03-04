@@ -11,24 +11,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
-    - name: Run Python commands
+    - name: List files
       run: |
-          pip install --upgrade pip
-          source .venv/bin/activate
-          echo "VIRTUAL ENV:" $VIRTUAL_ENV
-          pip freeze > requirements.txt
+        ls ${{ github.workspace }}
+#     - name: Set up Python 3.11
+#       uses: actions/setup-python@v4
+#       with:
+#         python-version: "3.11"
+#     - name: Run Python commands
+#       run: |
+#           pip install --upgrade pip
+#           source .venv/bin/activate
+#           echo "VIRTUAL ENV:" $VIRTUAL_ENV
+#           pip freeze > requirements.txt
     
-    - name: Package Windows Application
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: /
+#     - name: Package Windows Application
+#       uses: JackMcKew/pyinstaller-action-windows@main
+#       with:
+#         path: /
     
-    - name: Upload Windows Application
-      uses: actions/upload-artifact@v2
-      with:
-        name: my-exe
-        path: src/dist/windows
+#     - name: Upload Windows Application
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: my-exe
+#         path: src/dist/windows
