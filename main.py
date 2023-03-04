@@ -53,7 +53,7 @@ def check_similarity(str1, str2):
 
 def check_setup():
     chooseSetup = input(
-        "    Change team data location? (y: yes) (n or enter: no): ")
+        "    Change team data location? (y: yes)(n or enter: no): ")
 
     if exists("setup.json") and chooseSetup != "y":
         setupFile = open("setup.json")
