@@ -46,7 +46,8 @@ jobs:
           - os: windows-latest
             TARGET: windows
             CMD_BUILD: >
-              pyinstaller "Extract NSBL Games.spec"
+              pyinstaller "Extract NSBL Games.spec" &&
+              cd dist/ &&
               zip -r "extract-nsbl-games.zip" "Extract NSBL Games/"
             OUT_FILE_NAME: "Extract NSBL Games.zip"
             ASSET_MIME: application/vnd.microsoft.portable-executable
