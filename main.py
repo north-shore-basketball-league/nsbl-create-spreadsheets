@@ -20,8 +20,8 @@ def get_team_player_data(filename):
     totalRows = teamDataWs.used_range.rows.count
     totalCols = teamDataWs.used_range.columns.count
 
-    for row in range(1, totalRows+1):
-        for col in range(1, totalCols+1):
+    for row in range(1, totalRows):
+        for col in range(1, totalCols):
             border = teamDataWs.range((row, col)).api.Borders.Value
             value = str(teamDataWs.range((row, col)).value)
             if value and not "Teams" in value and not "None" in value and border and border < 0:
