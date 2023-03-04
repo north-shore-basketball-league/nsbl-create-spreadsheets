@@ -38,19 +38,11 @@ jobs:
           - os: macos-latest
             TARGET: macos
             CMD_BUILD: >
-              pyinstaller "Extract NSBL Games.spec" &&
-              cd dist/ &&
-              zip -r "extract-nsbl-games.zip" "Extract NSBL Games/"
-            OUT_FILE_NAME: "extract-nsbl-games.zip"
-            ASSET_MIME: application/zip
+              pyinstaller "Extract NSBL Games.spec"
           - os: windows-latest
             TARGET: windows
             CMD_BUILD: >
-              pyinstaller "Extract NSBL Games.spec" &&
-              cd dist/ &&
-              zip -r "extract-nsbl-games.zip" "Extract NSBL Games/"
-            OUT_FILE_NAME: "extract-nsbl-games.zip"
-            ASSET_MIME: application/zip
+              pyinstaller "Extract NSBL Games.spec"
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3.8
@@ -62,7 +54,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements${{matrix.TARGET}}.txt
       - name: Build with pyinstaller for ${{matrix.TARGET}}
-        run: ${{matrix.CMD_BUILD}}
+        run: ^
+          ${{matrix.CMD_BUILD}} &&
+          cd dist/
+      - name: zipping files
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -r "extract-nsbl-games.zip" "Extract NSBL Games/"
+
       - name: Load Release URL File from release job
         uses: actions/download-artifact@v1
         with:
@@ -80,6 +79,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: ./dist/${{ matrix.OUT_FILE_NAME}}
-          asset_name: ${{ matrix.OUT_FILE_NAME}}
-          asset_content_type: ${{ matrix.ASSET_MIME}}
+          asset_path: ./dist/extract-nsbl-games.zip
+          asset_name: extract-nsbl-games.zip
+          asset_content_type: application/zip
