@@ -51,11 +51,74 @@ def check_similarity(str1, str2):
                 return True
 
 
-def check_setup():
-    chooseSetup = input(
-        "    Change team data location? (y: yes)(n or enter: no): ")
+def create_setup_file():
+    teamDataFP = input(
+        "    Enter the team data file path (drag and drop team data onto prompt): ")
+    err = False
 
-    if exists("setup.json") and chooseSetup != "y":
+    try:
+        open(teamDataFP)
+    except:
+        err = True
+
+    while err:
+        teamDataFP = input(
+            "    Sorry, could not get team data from location, re-enter location: ")
+
+        try:
+            open(teamDataFP)
+        except:
+            err = True
+        else:
+            err = False
+
+    outputFolder = input(
+        "    Enter the output folder location (drag and drop the folder): ")
+
+    try:
+        exists(outputFolder)
+    except:
+        err = True
+
+    while err:
+        outputFolder = input(
+            "    Sorry, folder location doesnt exist, re-enter location: ")
+
+        try:
+            exists(outputFolder)
+        except:
+            err = True
+        else:
+            err = False
+    teamData = get_team_player_data(teamDataFP)
+
+    if exists("team-data.json"):
+        teamDataJSONFile = open("team-data.json", "w")
+    else:
+        teamDataJSONFile = open("team-data.json", "x")
+
+    if exists("setup.json"):
+        setup = open("setup.json", "w")
+    else:
+        setup = open("setup.json", "x")
+
+    json.dump(teamData, teamDataJSONFile)
+    json.dump({"setupComplete": True,
+               "teamDataFilePath": "team-data.json", "outputFilePath": outputFolder}, setup)
+
+    return teamData, outputFolder
+
+
+def check_setup():
+
+    if not exists("setup.json") or not exists("team-data.json"):
+        return create_setup_file()
+
+    chooseSetup = input(
+        "    Update team data and output folder? (y: yes) or (n or enter: no): ")
+
+    # Doesnt want to change setup
+    if chooseSetup != "y":
         setupFile = open("setup.json")
 
         setup = json.load(setupFile)
@@ -66,61 +129,7 @@ def check_setup():
 
         return json.load(open(teamDataJSONFP)), setup["outputFilePath"]
     else:
-        teamDataFP = input(
-            "    Enter the team data file path (drag and drop team data onto prompt): ")
-        err = False
-
-        try:
-            open(teamDataFP)
-        except:
-            err = True
-
-        while err:
-            teamDataFP = input(
-                "    Sorry, could not get team data from location, re-enter location: ")
-
-            try:
-                open(teamDataFP)
-            except:
-                err = True
-            else:
-                err = False
-
-        outputFolder = input(
-            "    Enter the output folder location (drag and drop the folder): ")
-
-        try:
-            exists(outputFolder)
-        except:
-            err = True
-
-        while err:
-            outputFolder = input(
-                "    Sorry, folder location doesnt exist, re-enter location: ")
-
-            try:
-                exists(outputFolder)
-            except:
-                err = True
-            else:
-                err = False
-        teamData = get_team_player_data(teamDataFP)
-
-        if exists("team-data.json"):
-            teamDataJSONFile = open("team-data.json", "w")
-        else:
-            teamDataJSONFile = open("team-data.json", "x")
-
-        if exists("setup.json"):
-            setup = open("setup.json", "w")
-        else:
-            setup = open("setup.json", "x")
-
-        json.dump(teamData, teamDataJSONFile)
-        json.dump({"setupComplete": True,
-                   "teamDataFilePath": "team-data.json", "outputFilePath": outputFolder}, setup)
-
-        return teamData, outputFolder
+        return create_setup_file()
 
 
 def get_court_data(teamPlayerData):
