@@ -60,7 +60,7 @@ The external python (pip) libraries that are used to create this are:
 
 ## How to build the application ##
 
-### These instructions are *only* for people who are looking to add features/change the code. if you are just wanting to use the application, follow the `How to use` and `How to download` sections. ###
+### These instructions are *only* for people who are looking to add features/change the code. if you are just wanting to use the application, follow the [How to use](#how-to-use) and [How to download](#how-to-download) sections. ###
 
 1. Fork the repo and clone that to your computer
 2. Navigate to inside the repos folder (`nsbl-create-spreadsheets`)
