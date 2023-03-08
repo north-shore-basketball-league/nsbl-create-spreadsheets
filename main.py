@@ -149,11 +149,10 @@ def get_court_data(teamPlayerData):
         for gameDateIndex in tableData["Dates & Times:"]:
             gameDate = tableData["Dates & Times:"][gameDateIndex]
 
-            date = gameDate
-
             gameDate = parse(gameDate)
 
             if gameDate > currentDate and rowIndex == -1:
+                date = tableData["Dates & Times:"][gameDateIndex]
                 rowIndex = gameDateIndex
 
         for col in tableData:
@@ -202,7 +201,8 @@ if __name__ == "__main__":
     print("    Web data extracted, now saving to excel templates")
     Printing().print_new()
 
-    export = ExportSpreadsheets(outputFolder+"\\"+date+"-sunday-games.xlsx")
+    export = ExportSpreadsheets(
+        outputFolder+"\\"+str(date)+"-sunday-games.xlsx")
 
     Printing().print_inline("opened output and templates")
 
