@@ -6,6 +6,8 @@ from printing import Printing
 from dateutil.parser import parse
 import datetime
 import xlwings as xw
+from time import sleep
+from thefuzz import fuzz
 from os.path import exists
 
 
@@ -17,6 +19,8 @@ def get_team_player_data(filename):
     teamDataSheetName = teamDataWb.sheet_names[-1]
     teamDataWs = teamDataWb.sheets[teamDataSheetName]
 
+    currentYear = "3/4"
+
     totalRows = teamDataWs.used_range.rows.count
     totalCols = teamDataWs.used_range.columns.count
 
@@ -24,31 +28,37 @@ def get_team_player_data(filename):
         for col in range(1, totalCols+1):
             border = teamDataWs.range((row, col)).api.Borders.Value
             value = str(teamDataWs.range((row, col)).value)
-            if value and not "Teams" in value and not "None" in value and border and border < 0:
 
-                teams[value] = []
+            # Check for a team name
+            if value and not "Teams" in value and not "None" in value and border and border < 0:
+                index = value + "-" + currentYear
+
+                teams[index] = []
                 playerIndex = 1
 
                 while teamDataWs.range(row+playerIndex, col+3).value != None:
                     playerNum = teamDataWs.range(row+playerIndex, col).value
                     playerName = teamDataWs.range(row+playerIndex, col+3).value
 
-                    teams[value].append([playerName, playerNum])
+                    teams[index].append([playerName, playerNum])
 
                     playerIndex += 1
+            # Check for a new year
+            elif value and "Teams" in value:
+                reMatch = re.search(
+                    r"(?P<y1>[1-9][0-9]|[1-9]).(?P<y2>[1-9][0-9]|[1-9])", value.lower())
+
+                currentYear = reMatch.group("y1")+"/"+reMatch.group("y2")
 
     app.quit()
     return teams
 
 
 def check_similarity(str1, str2):
-    if str1 == str2:
+    if fuzz.ratio(str1, str2) > 70:
         return True
 
-    for i in str1.lower().split(" "):
-        for t in str2.lower().split(" "):
-            if i == t:
-                return True
+    return False
 
 
 def create_setup_file():
@@ -164,6 +174,9 @@ def get_court_data(teamPlayerData):
                 date = tableData["Dates & Times:"][gameDateIndex]
                 rowIndex = gameDateIndex
 
+        if rowIndex == -1:
+            raise Exception("Date could not be found")
+
         for col in tableData:
             colData = re.match(
                 r"(?P<time>(?P<timeNum>\d{0,2})\w\w) \(C(?>[tT]\s*)?(?P<court>\d)\)", col)
@@ -179,17 +192,32 @@ def get_court_data(teamPlayerData):
                 white = teams.group("team1")
                 black = teams.group("team2")
 
-                # TODO:
-                # Get rid of this, is very temporary while there is a misspelling
-                for i in teamPlayerData:
-                    if check_similarity(white, i):
-                        white = i
+                matchYearNum = re.search(
+                    r"(?P<y1>[1-9][0-9]|[1-9]).(?P<y2>[1-9][0-9]|[1-9])", year[0])
+                currentYear = matchYearNum.group(
+                    "y1")+"/"+matchYearNum.group("y2")
 
-                    if check_similarity(black, i):
-                        black = i
+                playerDataWhite = white + "-" + currentYear
+
+                playerDataBlack = black + "-" + currentYear
+
+                for i in teamPlayerData:
+                    match = re.match(
+                        r"(?P<name>.*)-(?P<year>([0-9]|[1-9][0-9])/([0-9]|[1-9][0-9]))", i)
+                    team = match.group("name")
+                    dataYear = match.group("year")
+
+                    if dataYear != currentYear:
+                        continue
+
+                    if check_similarity(white, team):
+                        playerDataWhite = i
+
+                    if check_similarity(black, team):
+                        playerDataBlack = i
 
                 yearData[timeNum+"_c"+court] = {"time": time, "court": court,
-                                                "white": white, "black": black, white: teamPlayerData[white], black: teamPlayerData[black]}
+                                                "white": white, "black": black, white: teamPlayerData[playerDataWhite], black: teamPlayerData[playerDataBlack]}
 
         webData[year[0]] = yearData
 
@@ -222,3 +250,7 @@ if __name__ == "__main__":
     print("    Program completed! output saved to: " +
           outputFolder+"\\"+date+"-sunday-games.xlsx")
     export.save()
+
+    sleep(1)
+
+    export.cleanup()
