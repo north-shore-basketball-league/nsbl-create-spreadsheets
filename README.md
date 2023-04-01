@@ -66,4 +66,6 @@ The external python (pip) libraries that are used to create this are:
 2. Navigate to inside the repos folder (`nsbl-create-spreadsheets`)
 3. Ensure all necessary libraries are downloaded (see above for dependencies) - for me to get pyinstaller to work I had to use a local venv
 4. Run the command `pyinstaller '.\Extract NSBL Games.spec'` which will run the pyinstaller with the necessary settings for it to work
-5. If you have changed the code and think it would be a good addition to the repo, submit a pr and I'll review it
+5. You may be prompted to remove the contents of dist, select yes as the only thing inside it will be an old pyinstaller export
+6. This will create a folder in dist called `Extract NSBL Games` which will contain the application data and executable
+7. If you have changed the code and think it would be a good addition to the repo, submit a pr and I'll review it
