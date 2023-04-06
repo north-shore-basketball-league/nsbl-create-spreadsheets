@@ -37,6 +37,7 @@ class ExportSpreadsheets:
 
     def save(self):
         self.workbook.save(path=self.fileName)
+        self.template.save()
         self.app.quit()
 
     def add_data(self, data):

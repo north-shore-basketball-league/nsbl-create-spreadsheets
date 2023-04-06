@@ -170,9 +170,9 @@ def get_court_data(teamPlayerData):
 
             gameDate = parse(gameDate)
 
-            if gameDate > currentDate and rowIndex == -1:
-                date = tableData["Dates & Times:"][gameDateIndex]
-                rowIndex = gameDateIndex
+            # if gameDate > currentDate and rowIndex == -1:
+            date = tableData["Dates & Times:"][gameDateIndex]
+            rowIndex = gameDateIndex
 
         if rowIndex == -1:
             raise Exception("Date could not be found")
