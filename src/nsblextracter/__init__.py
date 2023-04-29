@@ -1,3 +1,8 @@
+__version__ = "1.1.0"
+__all__ = ["export"]
+__author__ = "Toby Clark"
+
+
 from exportSpreadsheet import ExportSpreadsheets
 from printing import Printing
 from extractCourtData import get_court_data
@@ -12,20 +17,18 @@ def makeExcel(day, exportLink, teamPlayerData, outputFolder):
     print(f"    {day} Web data extracted, now saving to excel templates")
     p.print_new()
 
-    export = ExportSpreadsheets(
-        outputFolder+"\\"+str(date)+"-"+day+"-games.xlsx"
-    )
+    fp = outputFolder / f"{str(date)}-{day}-games.xlsx"
+    export = ExportSpreadsheets(str(fp))
 
     p.print_inline("opened output and templates")
 
     export.add_data(data)
     p.print_new()
 
-    print(outputFolder, str(date), data)
     export.save()
     export.cleanup()
 
-    print(f"{day} games saved to:\n{outputFolder}\\{str(date)}-{day}-games.xlsx")
+    print(f"{day} games saved to:\n{str(fp)}")
 
 
 def export():
