@@ -5,10 +5,10 @@ block_cipher = None
 
 
 a = Analysis(
-    ['main.py', 'exportSpreadsheet.py', 'extractWebData.py', 'printing.py'],
+    ['./src/main.py', './src/exportSpreadsheet.py', './src/extractWebData.py', './src/printing.py'],
     pathex=[],
     binaries=[],
-    datas=[('./template.xlsx', '.'), ('./getIframeURL.js', '.')],
+    datas=[('./src/data/template.xlsx', '.'), ('./src/data/getIframeURL.js', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
