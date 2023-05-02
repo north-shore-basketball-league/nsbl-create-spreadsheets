@@ -14,16 +14,14 @@ def main():
             parentDir = Path(__file__).parent.parent
             packageName = "testpackage"
 
-        # folder = getVersion(parentDir, packageName)
-        packageName = "nsblextracter"
-        folder = parentDir / packageName
+        folder = getVersion(parentDir, packageName)
 
         sys.path.append(str(parentDir))
         sys.path.append(str(folder))
 
         package = importlib.import_module(packageName)
 
-        package.tmp()
+        package.export()
     except Exception as err:
         print("err: ", err)
 

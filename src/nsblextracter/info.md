@@ -12,6 +12,8 @@ stable=v1.0.2
 
 beta=v1.1.0
 
+dev=v1.2.0-dev.0
+
 ### Conventions
 
 #### Versions

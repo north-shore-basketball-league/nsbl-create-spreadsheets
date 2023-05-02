@@ -6,7 +6,7 @@ import requests
 
 
 def check_version(repo, folderPath) -> Tuple[bool, str]:
-    versionRegex = r"stable=(?P<version>v[0-9]{1,2}.[0,9]{1,2}.[0-9]{1,2})"
+    versionRegex = r"dev=(?P<version>v[0-9]{1,2}.[0,9]{1,2}.[0-9]{1,2})"
     localVersion = "_"
     repoVersion = "_"
 
