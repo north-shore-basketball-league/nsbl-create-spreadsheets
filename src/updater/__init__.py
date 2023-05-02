@@ -6,24 +6,28 @@ import sys
 
 
 def main():
+    try:
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+            parentDir = Path(__file__).parent
+            packageName = "nsblextracter"
+        else:
+            parentDir = Path(__file__).parent.parent
+            packageName = "testpackage"
 
-    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-        parentDir = Path(__file__).parent
-        packageName = "nsblextracter"
-    else:
-        parentDir = Path(__file__).parent.parent
-        packageName = "nsblextracter"
+        folder = getVersion(parentDir, packageName)
 
-    folder = getVersion(parentDir, packageName)
+        sys.path.append(str(parentDir))
+        sys.path.append(str(folder))
 
-    sys.path.append(str(parentDir))
-    sys.path.append(str(folder))
+        package = importlib.import_module(packageName)
 
-    package = importlib.import_module(packageName)
+        package.export()
+        sleep(1)
+    except Exception as err:
+        print("err: ", err)
+        sleep(10)
 
-    package.export()
-
-    sleep(1)
+    sys.exit()
 
 
 if __name__ == "__main__":

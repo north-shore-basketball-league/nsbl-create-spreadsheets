@@ -96,6 +96,8 @@ def check_setup():
     setup = setupDataDir / "setup.json"
     teamData = setupDataDir / "team-data.json"
 
+    setupDataDir.mkdir(exist_ok=True, parents=True)
+
     if not setup.exists() or not teamData.exists():
         return create_setup_file(setup, teamData)
 
@@ -113,7 +115,3 @@ def check_setup():
         return teamDataJSON, Path(setupJSON["outputFilePath"])
     else:
         return create_setup_file(setup, teamData)
-
-
-if __name__ == "__main__":
-    print(create_setup_file())

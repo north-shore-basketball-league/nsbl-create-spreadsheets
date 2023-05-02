@@ -7,7 +7,8 @@ import requests
 
 def check_version(repo, folderPath) -> Tuple[bool, str]:
     "dev=v1.2.0-dev.1"
-    versionRegex = r"dev=(?P<version>v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}(?:-beta\.[0-9]{1,2}))"
+    versionRegex = r"beta=(?P<version>v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}(?:-beta\.[0-9]{1,2}))"
+    justNumsRegex = r"(?P<v>[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2})"
     localVersion = "_"
     repoVersion = "_"
 
@@ -16,6 +17,7 @@ def check_version(repo, folderPath) -> Tuple[bool, str]:
     repoVersionRegex = re.search(versionRegex, str(contents).lower())
     if repoVersionRegex:
         repoVersion = repoVersionRegex.group("version")
+        repoNumsOnly = re.search(justNumsRegex, repoVersion).group("v")
     else:
         print(contents)
         raise Exception("Repo version not found!")
@@ -33,13 +35,15 @@ def check_version(repo, folderPath) -> Tuple[bool, str]:
             if localVersionRegex:
                 localVersion = localVersionRegex.group(
                     "version")
+                localNumsOnly = re.search(
+                    justNumsRegex, localVersion).group("v")
 
     if localVersion == "_":
         raise Exception("Local version not found!")
 
     # Convert both to arrays
-    localVArray = localVersion.strip("v").split(".")
-    repoVArray = repoVersion.strip("v").split(".")
+    localVArray = localNumsOnly.split(".")
+    repoVArray = repoNumsOnly.split(".")
 
     for i in range(3):
         if int(repoVArray[i]) > int(localVArray[i]):

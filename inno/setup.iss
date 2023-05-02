@@ -2,10 +2,18 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Extract NSBL Games"
-#define MyAppVersion "2.0.0-dev"
+#define MyAppVersion "1.2.0-beta"
 #define MyAppPublisher "Toby Clark"
 #define MyAppURL "https://github.com/tobsterclark/nsbl-create-spreadsheets"
 #define MyAppExeName "Extract NSBL Games.exe"
+
+[UninstallDelete]
+Type: files; Name: "{app}\*"
+Type: filesandordirs; Name: "{app}\*"
+
+[InstallDelete]
+Type: files; Name: "{app}\*"
+Type: filesandordirs; Name: "{app}\*"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
