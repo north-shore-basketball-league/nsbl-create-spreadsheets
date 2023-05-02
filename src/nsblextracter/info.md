@@ -10,9 +10,9 @@ Built to manage NSBL's weekly scoresheets
 
 stable=v1.0.2
 
-beta=v1.1.0
+beta=v1.2.0-beta.0
 
-dev=v1.2.0-dev.0
+dev=v1.2.0-dev.1
 
 ### Conventions
 

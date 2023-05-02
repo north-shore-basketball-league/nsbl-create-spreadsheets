@@ -1,3 +1,4 @@
+from pathlib import Path
 import xlwings as xw
 import re
 from printing import Printing
@@ -5,6 +6,8 @@ from printing import Printing
 
 class ExportSpreadsheets:
     def __init__(self, fileName):
+        templateFP = Path(__file__).parent / "data" / "template.xlsx"
+
         self.scoresheetImg = None
 
         self.fileName = fileName
@@ -13,7 +16,7 @@ class ExportSpreadsheets:
         self.app.visible = False
 
         self.workbook = self.app.books.add()
-        self.template = self.app.books.open("./data/template.xlsx")
+        self.template = self.app.books.open(str(templateFP))
 
         self._create_worksheet("runsheet", "runsheet")
 
@@ -66,6 +69,7 @@ class ExportSpreadsheets:
         add(key, "time", data["time"])
         add(key, "year_group", "GRADES " + year)
         add(key, "venue", data["venue"])
+        add(key, "date", data["date"])
 
         worksheet = self.workbook.sheets[key]
 

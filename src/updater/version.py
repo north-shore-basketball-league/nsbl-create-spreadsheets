@@ -6,7 +6,8 @@ import requests
 
 
 def check_version(repo, folderPath) -> Tuple[bool, str]:
-    versionRegex = r"dev=(?P<version>v[0-9]{1,2}.[0,9]{1,2}.[0-9]{1,2})"
+    "dev=v1.2.0-dev.1"
+    versionRegex = r"dev=(?P<version>v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}(?:-beta\.[0-9]{1,2}))"
     localVersion = "_"
     repoVersion = "_"
 
@@ -16,9 +17,11 @@ def check_version(repo, folderPath) -> Tuple[bool, str]:
     if repoVersionRegex:
         repoVersion = repoVersionRegex.group("version")
     else:
+        print(contents)
         raise Exception("Repo version not found!")
 
     if not folderPath.exists():
+        print("downloading script...")
         return [True, repoVersion]
 
     # Get local version
@@ -40,6 +43,7 @@ def check_version(repo, folderPath) -> Tuple[bool, str]:
 
     for i in range(3):
         if int(repoVArray[i]) > int(localVArray[i]):
+            print("updating script...")
             return [True, repoVersion]
 
     return [False, localVersion]
@@ -65,8 +69,16 @@ def getVersion(parentDir, packageName) -> str:
 
         release = repo.get_release(version)
         downloadAssests = release.assets
+        asset = None
 
-        downloadURL = downloadAssests[0].browser_download_url
+        for asset in downloadAssests:
+            if asset.content_type == "application/x-zip-compressed":
+                asset = asset
+
+        if not asset:
+            raise Exception("zip file not found")
+
+        downloadURL = asset.browser_download_url
 
         res = requests.get(downloadURL)
         downloadPath.open("wb").write(res.content)
@@ -77,7 +89,3 @@ def getVersion(parentDir, packageName) -> str:
         downloadPath.unlink()
 
     return programDir
-
-
-if __name__ == "__main__":
-    getVersion()

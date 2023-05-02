@@ -1,3 +1,5 @@
+import datetime
+from pathlib import Path
 from dateutil.parser import parse
 from thefuzz import fuzz
 from extractWebData import ExtractWebData
@@ -12,19 +14,19 @@ def check_similarity(str1, str2) -> bool:
 
 
 def get_court_data(teamPlayerData, years):
+    iframeJSFP = Path(__file__).parent / "data" / "getIframeURL.js"
     webData = {}
 
     date = ""
 
-    # currentDate = datetime.datetime.now()
-    currentDate = parse("29/04/2023")
+    currentDate = datetime.datetime.now()
 
     for year in years:
         Printing().print_inline(f"Extracting years {year[0]} web data")
         yearData = {}
         extract = ExtractWebData()
 
-        tableLinks = extract.get_table_urls(year[1], "./data/getIframeURL.js")
+        tableLinks = extract.get_table_urls(year[1], str(iframeJSFP))
         tableDataDf = extract.get_table_data(tableLinks, "times")
 
         tableData = tableDataDf.to_dict()
@@ -61,8 +63,17 @@ def get_court_data(teamPlayerData, years):
                 timeNum = colData.group("timeNum")
                 time = colData.group("time")
 
-                teams = re.match(
-                    r"(?P<team1>.*)\W?\(W\) v (?P<team2>.*)\W?\(B\)", tableData[col][rowIndex])
+                gameTeams = tableData[col][rowIndex]
+
+                if re.search(r"long weekend", gameTeams.lower()):
+                    raise Exception("No game this week")
+
+                if re.search(r"\(w\)", gameTeams.lower()):
+                    teams = re.match(
+                        r"(?P<team1>.*)\W?\(W\) v (?P<team2>.*)\W?\(B\)", tableData[col][rowIndex])
+                else:
+                    teams = re.match(
+                        r"(?P<team1>.*) v (?P<team2>.*)", tableData[col][rowIndex])
 
                 white = teams.group("team1")
                 black = teams.group("team2")
@@ -98,7 +109,7 @@ def get_court_data(teamPlayerData, years):
                 else:
                     raise Exception("venue not st ives or belrose")
 
-                yearData[dataIndex] = {"venue": venue, "time": time, "court": court,
+                yearData[dataIndex] = {"venue": venue, "time": time, "court": court, "date": date,
                                        "white": white, "black": black, white: teamPlayerData[playerDataWhite], black: teamPlayerData[playerDataBlack]}
 
         webData[year[0]] = yearData
