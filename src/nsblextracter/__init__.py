@@ -45,5 +45,9 @@ def export():
     makeExcel("wednesday", wednesdayGame, teamPlayerData, outputFolder)
 
 
+def tmp():
+    print("running!")
+
+
 if __name__ == "__main__":
     export()

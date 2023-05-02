@@ -5,11 +5,10 @@ block_cipher = None
 
 
 a = Analysis(
-    ['./src/main.py', './src/exportSpreadsheet.py', './src/extractWebData.py', './src/printing.py'],
-    pathex=[],
+    ['./src/updater/__init__.py','./src/updater/version.py'],
+    pathex=['./src/updater'],
     binaries=[],
-    datas=[('./src/data/template.xlsx', '.'), ('./src/data/getIframeURL.js', '.')],
-    hiddenimports=[],
+    hiddenimports=["xlwings", "thefuzz.fuzz", "dateutil.parser", "re", "selenium", "webdriver_manager", "webdriver_manager.chrome", "webdriver_manager.chrome.ChromeDriverManager", "selenium", "selenium.webdriver", "selenium.webdriver.chrome", "selenium.webdriver.support", "selenium.webdriver.common", "selenium.webdriver.chrome.service", "selenium.webdriver.support.wait", "selenium.webdriver.common.by", "pandas", "json", "pathlib"],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

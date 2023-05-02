@@ -1,5 +1,4 @@
 from dateutil.parser import parse
-import datetime
 from thefuzz import fuzz
 from extractWebData import ExtractWebData
 import re
