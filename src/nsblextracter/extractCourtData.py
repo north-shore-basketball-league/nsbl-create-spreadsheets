@@ -52,7 +52,7 @@ def get_court_data(teamPlayerData, years):
 
         for col in tableData:
             colData = re.match(
-                r"(?P<location>(BELROSE)|(ST IVES))?\W?(?P<time>(?P<timeNum>\d{0,2})\w\w) \(C(?>[tT]\s*)?(?P<court>\d)\)", col)
+                r"(?P<location>(BELROSE)|(ST IVES))?\W?(?P<time>(?P<timeNum>\d{0,3})\w\w) (?:(?:\(C(?:[tT]\s*)?)|Court)\s?(?P<court>\d)(?:\))?", col)
 
             if colData:
                 if colData.groups()[0]:
@@ -78,10 +78,13 @@ def get_court_data(teamPlayerData, years):
                 white = teams.group("team1")
                 black = teams.group("team2")
 
-                matchYearNum = re.search(
-                    r"(?P<y1>[1-9][0-9]|[1-9]).(?P<y2>[1-9][0-9]|[1-9])", year[0])
-                currentYear = matchYearNum.group(
-                    "y1")+"/"+matchYearNum.group("y2")
+                if year[0] == "adults":
+                    currentYear = "adults"
+                else:
+                    matchYearNum = re.search(
+                        r"(?P<y1>[1-9][0-9]|[1-9]).(?P<y2>[1-9][0-9]|[1-9])", year[0])
+                    currentYear = matchYearNum.group(
+                        "y1")+"/"+matchYearNum.group("y2")
 
                 playerDataWhite = white + "-" + currentYear
 

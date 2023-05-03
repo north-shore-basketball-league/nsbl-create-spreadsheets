@@ -8,7 +8,7 @@ a = Analysis(
     ['./src/updater/__init__.py','./src/updater/version.py'],
     pathex=['./src/updater'],
     binaries=[],
-    hiddenimports=["xlwings", "python-Levenshtein", "thefuzz.fuzz", "dateutil.parser", "re", "selenium", "webdriver_manager", "webdriver_manager.chrome", "webdriver_manager.chrome.ChromeDriverManager", "selenium", "selenium.webdriver", "selenium.webdriver.chrome", "selenium.webdriver.support", "selenium.webdriver.common", "selenium.webdriver.chrome.service", "selenium.webdriver.support.wait", "selenium.webdriver.common.by", "pandas", "json", "pathlib"],
+    hiddenimports=["xlwings", "python-Levenshtein", "thefuzz.fuzz", "dateutil.parser", "re", "selenium", "webdriver_manager", "webdriver_manager.chrome", "webdriver_manager.chrome.ChromeDriverManager", "selenium", "selenium.webdriver", "selenium.webdriver.chrome", "selenium.webdriver.support", "selenium.webdriver.common", "selenium.webdriver.chrome.service", "selenium.webdriver.support.wait", "selenium.webdriver.common.by", "pandas", "json", "pathlib.Path"],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

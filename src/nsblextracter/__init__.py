@@ -41,7 +41,7 @@ def export():
 
     teamPlayerData, outputFolder = check_setup()
 
-    makeExcel("sunday", sundayYears, teamPlayerData, outputFolder)
+    # makeExcel("sunday", sundayYears, teamPlayerData, outputFolder)
     makeExcel("wednesday", wednesdayGame, teamPlayerData, outputFolder)
 
 
