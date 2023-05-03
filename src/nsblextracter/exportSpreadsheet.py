@@ -5,7 +5,7 @@ from printing import Printing
 
 
 class ExportSpreadsheets:
-    def __init__(self, fileName):
+    def __init__(self, fileName, ageType="kids"):
         templateFP = Path(__file__).parent / "data" / "template.xlsx"
 
         self.scoresheetImg = None
@@ -17,14 +17,22 @@ class ExportSpreadsheets:
 
         self.workbook = self.app.books.add()
         self.template = self.app.books.open(str(templateFP))
+        self.templateVars = {}
 
-        self._create_worksheet("runsheet", "runsheet")
+        if ageType == "kids":
+            self._create_worksheet("runsheet-k", "runsheet")
+            self.templateVars["runsheet"] = self._get_variable_pos(
+                self.template.sheets["runsheet-k"])
+        else:
+            self._create_worksheet("runsheet-a", "runsheet")
+            self.templateVars["runsheet"] = self._get_variable_pos(
+                self.template.sheets["runsheet-a"])
 
         if "Sheet1" in self.workbook.sheet_names:
             self.workbook.sheets["Sheet1"].delete()
 
-        self.templateVars = {"runsheet": self._get_variable_pos(
-            self.template.sheets["runsheet"]), "scoresheet": self._get_variable_pos(self.template.sheets["scoresheet"])}
+        self.templateVars["scoresheet"] = self._get_variable_pos(
+            self.template.sheets["scoresheet"])
 
     def cleanup(self):
         for app in xw.apps.keys():
@@ -47,6 +55,7 @@ class ExportSpreadsheets:
             for game in data[year]:
                 Printing().print_inline(
                     f"Exporting data for years {year} and court {game}")
+                print(data[year][game], game)
                 self._add_runsheet_data(data[year][game], game)
                 self._add_scoresheet_data(data[year][game], game, year)
 

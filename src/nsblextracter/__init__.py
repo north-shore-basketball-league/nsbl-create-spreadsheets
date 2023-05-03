@@ -9,6 +9,10 @@ from setup import check_setup
 
 
 def makeExcel(day, exportLink, teamPlayerData, outputFolder):
+    yearType = "kids"
+    if day == "wednesday":
+        yearType = "adults"
+
     p = Printing()
 
     p.print_new()
@@ -17,7 +21,7 @@ def makeExcel(day, exportLink, teamPlayerData, outputFolder):
     p.print_new()
 
     fp = outputFolder / f"{str(date)}-{day}-games.xlsx"
-    export = ExportSpreadsheets(str(fp))
+    export = ExportSpreadsheets(str(fp), yearType)
 
     p.print_inline("opened output and templates")
 

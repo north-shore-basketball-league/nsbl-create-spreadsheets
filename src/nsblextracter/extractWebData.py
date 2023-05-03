@@ -42,7 +42,7 @@ class ExtractWebData:
         for url in urls:
             self.driver.get(url)
 
-            WebDriverWait(self.driver, timeout=5).until(
+            WebDriverWait(self.driver, timeout=20).until(
                 lambda d: d.find_element(By.ID, "theTable").get_attribute("innerHTML") != "")
 
             table = self.driver.find_element(
