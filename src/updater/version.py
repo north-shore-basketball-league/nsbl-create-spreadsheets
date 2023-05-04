@@ -5,9 +5,15 @@ import re
 import requests
 
 
-def check_version(repo, folderPath) -> Tuple[bool, str]:
+def check_version(repo, folderPath, release) -> Tuple[bool, str]:
     "dev=v1.2.0-dev.1"
-    versionRegex = r"beta=(?P<version>v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}(?:-beta\.[0-9]{1,2}))"
+    if release == "beta" or release == "dev":
+        versionRegex = release + \
+            r"=(?P<version>v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}(?:-" + \
+            release+r"\.[0-9]{1,2}))"
+    else:
+        versionRegex = release + \
+            r"=(?P<version>v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2})"
     justNumsRegex = r"(?P<v>[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2})"
     localVersion = "_"
     repoVersion = "_"

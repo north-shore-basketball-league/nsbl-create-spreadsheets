@@ -14,7 +14,7 @@ def main():
             parentDir = Path(__file__).parent.parent
             packageName = "testpackage"
 
-        folder = getVersion(parentDir, packageName)
+        folder = getVersion(parentDir, packageName, "dev")
 
         sys.path.append(str(parentDir))
         sys.path.append(str(folder))
@@ -22,7 +22,7 @@ def main():
         package = importlib.import_module(packageName)
 
         package.export()
-        sleep(1)
+        sleep(2)
     except Exception as err:
         print("err: ", err)
         sleep(10)
