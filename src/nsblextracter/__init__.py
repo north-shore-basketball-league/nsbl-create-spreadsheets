@@ -6,6 +6,7 @@ from exportSpreadsheet import ExportSpreadsheets
 from printing import Printing
 from extractCourtData import get_court_data
 from setup import check_setup
+import xlwings as xw
 
 
 def makeExcel(day, exportLink, teamPlayerData, outputFolder):
@@ -29,7 +30,6 @@ def makeExcel(day, exportLink, teamPlayerData, outputFolder):
     p.print_new()
 
     export.save()
-    export.cleanup()
 
     print(f"{day} games saved to:\n{str(fp)}")
 
@@ -43,10 +43,25 @@ def export():
                    ]
     wednesdayGame = [["adults", "https://www.nsbl.com.au/adultcompetition"]]
 
-    teamPlayerData, outputFolder = check_setup()
+    try:
+        teamPlayerData, outputFolder = check_setup()
 
-    # makeExcel("sunday", sundayYears, teamPlayerData, outputFolder)
-    makeExcel("wednesday", wednesdayGame, teamPlayerData, outputFolder)
+        makeExcel("sunday", sundayYears, teamPlayerData, outputFolder)
+        makeExcel("wednesday", wednesdayGame, teamPlayerData, outputFolder)
+    except Exception as err:
+        print("Error occured:", err)
+    finally:
+        # Kill all excel processes
+        for app in xw.apps.keys():
+            print("Excel app still running with pid: ", app)
+            xw.apps[app].kill()
+
+        if xw.apps.keys():
+            for app in xw.apps.keys():
+                xw.apps[app].visbile = True
+
+            raise Exception(
+                "Excel not cleaned up! All apps set to visible")
 
 
 if __name__ == "__main__":

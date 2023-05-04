@@ -34,18 +34,6 @@ class ExportSpreadsheets:
         self.templateVars["scoresheet"] = self._get_variable_pos(
             self.template.sheets["scoresheet"])
 
-    def cleanup(self):
-        for app in xw.apps.keys():
-            print("Excel app still running with pid: ", app)
-            xw.apps[app].kill()
-
-        if xw.apps.keys():
-            for app in xw.apps.keys():
-                xw.apps[app].visbile = True
-
-            raise Exception(
-                "Excel not cleaned up! All apps set to visible")
-
     def save(self):
         self.workbook.save(path=self.fileName)
         self.app.quit()
@@ -55,7 +43,6 @@ class ExportSpreadsheets:
             for game in data[year]:
                 Printing().print_inline(
                     f"Exporting data for years {year} and court {game}")
-                print(data[year][game], game)
                 self._add_runsheet_data(data[year][game], game)
                 self._add_scoresheet_data(data[year][game], game, year)
 
