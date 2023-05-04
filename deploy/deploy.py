@@ -1,11 +1,13 @@
+from os import environ
 import click
 import re
 from pathlib import Path
+from github import Github
 
 from dotenv import load_dotenv, set_key
 # Loading env variables before importing os
 path = Path(__file__).parent.parent/"src"/"updater"/".env"
-load_dotenv(path)
+load_dotenv()
 
 
 @click.command
@@ -24,6 +26,8 @@ def deploy(version, type):
     if not check:
         raise click.BadParameter(
             "Version format must be: 0.0.0-dev.0 or 0.0.0")
+
+    # g = Github(environ.get("githubToken"))
 
     set_key(path, "version", version)
     set_key(path, "releaseType", type)
