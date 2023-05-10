@@ -1,6 +1,7 @@
 test.xlsx
 team-data.*
 output.*
+*.DS_Store
 **/**/setup/
 __pycache__/
 build/
