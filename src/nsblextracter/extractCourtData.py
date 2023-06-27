@@ -42,6 +42,8 @@ def get_court_data(teamPlayerData, years):
             gameDate = tableData[dateIndex][gameDateIndex]
 
             gameDate = parse(gameDate)
+            gameDate = datetime.datetime.fromtimestamp(
+                gameDate.timestamp() + 86400)
 
             if gameDate > currentDate and rowIndex == -1:
                 date = tableData[dateIndex][gameDateIndex]
