@@ -18,6 +18,7 @@ class ExportSpreadsheets:
         self.workbook = self.app.books.add()
         self.template = self.app.books.open(str(templateFP))
         self.templateVars = {}
+        self.ageType = ageType
 
         if ageType == "kids":
             self._create_worksheet("runsheet-k", "runsheet")
@@ -47,8 +48,12 @@ class ExportSpreadsheets:
                 self._add_scoresheet_data(data[year][game], game, year)
 
     def _add_runsheet_data(self, data, game):
-        self._add_data_to_worksheet("runsheet", game,
+        if self.ageType == "kids":
+            self._add_data_to_worksheet("runsheet", game,
                                     data["white"] + " (W) vs " + data["black"] + " (B)", "runsheet")
+        else:
+            self._add_data_to_worksheet("runsheet", game,
+                                    data["white"] + " vs " + data["black"], "runsheet")
 
     def _add_scoresheet_data(self, data, key, year):
         add = self._add_data_to_worksheet

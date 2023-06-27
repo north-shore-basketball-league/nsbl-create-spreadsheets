@@ -55,17 +55,17 @@ def get_team_player_data(filename):
 
 
 def get_fp(inputText):
-    fp = input(inputText)
+    fp = Path(input(inputText).strip('"'))
 
-    if Path(fp).exists() and fp != "":
-        return Path(fp)
+    if fp.exists() and str(fp) != "":
+        return fp
 
     for _ in range(5):
-        fp = input(
-            "    Sorry, folder/file location doesnt exist, re-enter location: ")
+        fp = Path(input(
+            "    Sorry, folder/file location doesnt exist, re-enter location: ").strip('"'))
 
-        if Path(fp).exists() and fp != "":
-            return Path(fp)
+        if fp.exists() and str(fp) != "":
+            return fp
 
     raise Exception("File/Folder not found in 5 attempts")
 
