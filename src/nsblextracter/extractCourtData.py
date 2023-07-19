@@ -72,7 +72,7 @@ def get_court_data(teamPlayerData, years):
 
                 if re.search(r"\(w\)", gameTeams.lower()):
                     teams = re.match(
-                        r"(?P<team1>.*)\W?\(W\) v (?P<team2>.*)\W?\(B\)", tableData[col][rowIndex])
+                        r"(?P<team1>.*)\W?(?:\(W\))? v (?P<team2>.*)\W?(?:\(B\))?", tableData[col][rowIndex])
                 else:
                     teams = re.match(
                         r"(?P<team1>.*) v (?P<team2>.*)", tableData[col][rowIndex])

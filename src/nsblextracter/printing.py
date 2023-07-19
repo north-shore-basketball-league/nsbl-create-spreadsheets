@@ -37,7 +37,7 @@ class Printing:
 
 
     {self.formatting.HEADER}{self.formatting.OKBLUE}Starting to extract this weeks runsheet and scoresheets!{self.formatting.ENDC}
-
+    {self.formatting.UNDERLINE}{self.formatting.OKCYAN}Running Version: v1.2.0-beta.5{self.formatting.ENDC}
 
 
 ''')
