@@ -68,7 +68,7 @@ def getVersion(parentDir, packageName) -> str:
     repo = g.get_repo("tobsterclark/nsbl-create-spreadsheets")
 
     # checking latest version
-    updateNeeded, version = check_version(repo, programDir)
+    updateNeeded, version = check_version(repo, programDir, "beta")
 
     # Download new dir
     if updateNeeded:
