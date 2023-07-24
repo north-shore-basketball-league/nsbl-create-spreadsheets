@@ -32,7 +32,7 @@ def check_version(repo, folderPath, release) -> Tuple[bool, str]:
         print("downloading script...")
         return [True, repoVersion]
 
-    # Get local version
+    # Get local version dets
     infoPath = folderPath / "info.md"
     with infoPath.open() as file:
         for i in file:
